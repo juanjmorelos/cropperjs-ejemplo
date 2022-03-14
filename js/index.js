@@ -79,12 +79,6 @@ $('#cut').on('click', (e) => {
 
         crop_image.src = url_cut
 
-        //obtenemos la imagen
-
-        let reader = new FileReader()
-        reader.readAsDataURL(blob)
-        let base64 = reader.result
-
         $('.modal').removeClass('active')
         $('.modal-content').removeClass('active')
 
