@@ -1,36 +1,27 @@
 let cropper = null;
 
-$('#input-file').on('change', (e) => {
-    // variables necesarios
-    let image = document.getElementById('img-cropper') // Donde se va a poner la imagen a cortar
-    let seleccionArchivos = document.getElementById('input-file') // el input:file
-    const archivos = seleccionArchivos.files; // obtenemos los archivos que se seleccionaron del input:file
+$('#input-file').on('change', () => {
+    let image = document.getElementById('img-cropper')
+    let input = document.getElementById('input-file')
 
-    let extension = seleccionArchivos.value.substring(seleccionArchivos.value.lastIndexOf('.'), seleccionArchivos.value.length) // obtenemos la extenciones aceptadas del input:file
+    let archivos = input.files
+    let extensiones = input.value.substring(input.value.lastIndexOf('.'), input.value.lenght)
+    
 
-    if (!archivos || !archivos.length) {
-
-        // verificamos que se seleccionó un archivo
-        image.src = ""
-        $('#input-file').val('')
-
-    } else if (seleccionArchivos.getAttribute('accept').split(',').indexOf(extension) < 0) {
-
-        // si seleccionó algo verificamos que sea una imagen si no es una imagen le mandamos la siguiente alerta
-        alert('Sólo puedes seleccionar imágenes')
-        $('#input-file').val('')
+    if(!archivos || !archivos.length){        
+        image.src = "";
+        input.value = "";
+        
+    } else if(input.getAttribute('accept').split(',').indexOf(extensiones) < 0){
+         alert('Debes seleccionar una imagen')
+         input.value = "";
 
     } else {
+        let imagenUrl = URL.createObjectURL(archivos[0])
+        image.src = imagenUrl
 
-        // si es imagen obtenemos el archivo y lo convertimos a una URL
-        const primerArchivo = archivos[0];
-        const objectURL = URL.createObjectURL(primerArchivo);
-
-        image.src = objectURL // Le mandamos la url creada a la imagen
-
-        // inicializamos cropper y damos unas opciones
         cropper = new Cropper(image, {
-            aspectRatio: 1, // es como queremos que recorte
+            aspectRatio: 1, // es la proporción en la que queremos que recorte en este caso 1:1
             preview: '.img-sample', // contenedor donde se va a ir viendo en tiempo real la imagen cortada
             zoomable: false, //Para que no haga zoom 
             viewMode: 1, //Para que no estire la imagen al contenedor
@@ -42,8 +33,6 @@ $('#input-file').on('change', (e) => {
             }
         })
 
-        
-        // activamos el modal
         $('.modal').addClass('active')
         $('.modal-content').addClass('active')
 
@@ -52,40 +41,41 @@ $('#input-file').on('change', (e) => {
     }
 })
 
-$('#close').on('click', (e) => {
-    let image = document.getElementById('img-cropper');
+$('#close').on('click', () => {
+    let image = document.getElementById('img-cropper')
+    let input = document.getElementById('input-file')
 
-    $('.modal').removeClass('active')
-    $('.modal-content').removeClass('active')
+    image.src = "";
+    input.value = "";
+
+    cropper.destroy()
 
     $('.modal').addClass('remove')
     $('.modal-content').addClass('remove')
 
-    $('#input-file').val('')
+    $('.modal').removeClass('active')
+    $('.modal-content').removeClass('active')
+})
+
+$('#cut').on('click', () => {
+    let crop_image = document.getElementById('crop-image')
+    let canva = cropper.getCroppedCanvas()
+    let image = document.getElementById('img-cropper')
+    let input = document.getElementById('input-file')
+
+    canva.toBlob(function(blob){
+        let url_cut = URL.createObjectURL(blob)
+        crop_image.src = url_cut;
+    })
+
     image.src = "";
+    input.value = "";
 
     cropper.destroy()
 
-})
+    $('.modal').addClass('remove')
+    $('.modal-content').addClass('remove')
 
-$('#cut').on('click', (e) => {
-
-    let canvas = cropper.getCroppedCanvas()
-
-    canvas.toBlob(function(blob){
-
-        let crop_image = document.getElementById('crop-image')
-        let url_cut = URL.createObjectURL(blob)
-
-        crop_image.src = url_cut
-
-        $('.modal').removeClass('active')
-        $('.modal-content').removeClass('active')
-
-        $('.modal').addClass('remove')
-        $('.modal-content').addClass('remove')
-        $('#input-file').val('')
-
-        cropper.destroy()
-    })
+    $('.modal').removeClass('active')
+    $('.modal-content').removeClass('active')
 })
