@@ -1,5 +1,5 @@
 # cropperjs-ejemplo
-<p>Ejemplo de como usar cropper js, tutorial realizado por <a href="https://www.youtube.com/user/jj43ist?sub_confirmation=1" target="_blank">JotaTuts</a></p>
+<p>Ejemplo de como usar cropper js, tutorial realizado por <a href="https://www.youtube.com/user/jj43ist?sub_confirmation=1" target="_blank">JotaTuts</a><br> Link del turorial: <a href="https://youtu.be/xS2VrknVfzE" target="_blank">https://youtu.be/xS2VrknVfzE</a></p>
 <p>Capturas de pantalla:</p>
 <p>
   <img src="https://www.mediafire.com/convkey/fb89/ly0dzbrpsf454dc9g.jpg" alt="interfaz">
